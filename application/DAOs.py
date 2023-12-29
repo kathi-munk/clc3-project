@@ -21,7 +21,7 @@ class UserDAO:
 
 class MovieDAO:
     def get_movies(self):
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         movie_list = []
         try:
             cursor = conn.cursor()
@@ -45,7 +45,7 @@ class MovieDAO:
 
     def get_movie_by_id(self, id):
         # Connect to the SQLite database
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             # Create a cursor object using the cursor() method
             cursor = conn.cursor()
