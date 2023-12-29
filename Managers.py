@@ -8,10 +8,12 @@ class UserManager:
 
     def login(self, username, password):
         #call get_user
-        pass
+        UserDAO.get_user(username, password)
 
     def get_watchlist(self, user_id):
         #get movies and filter
+        allMovies = UserDAO.get_movies(user_id)
+        # TODO filter
         pass
 
     def get_watched_movies(self, user_id):
