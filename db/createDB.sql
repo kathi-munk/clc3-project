@@ -2,24 +2,18 @@ CREATE DATABASE clc_moviedb;
 
 CREATE TABLE movie (
     id				INT(11)			NOT NULL,
-	categoryId		INT(11)			NOT NULL,
 	title			VARCHAR(150) 	NOT NULL,
 	overview		VARCHAR(500)	NOT NULL,
 	release_date	DATE			NOT NULL,
 	imgPath			VARCHAR(100)	NOT NULL,
-	PRIMARY KEY (id),
-	KEY categoryId (categoryId)
-);
-
-CREATE TABLE category(
-     id   			INT(11) 		NOT NULL auto_increment,
-     name 			VARCHAR(255) 	NOT NULL,
-     PRIMARY KEY (id)
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE user_movie(
     userId      INT(11)     NOT NULL,
     movieId     INT(11)     NOT NULL,
+    watched     BOOLEAN     NOT NULL,
+    rating      INT(11),
     PRIMARY KEY (userId, movieId)
 );
 
@@ -39,8 +33,6 @@ CREATE TABLE video(
     type        VARCHAR(100)    NOT NULL,
     PRIMARY KEY (id)
 );
-
-ALTER TABLE movie ADD CONSTRAINT movie_ibfk_1 FOREIGN KEY (categoryId) REFERENCES category (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE user_movie ADD CONSTRAINT user_movie_fk1 FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE user_movie ADD CONSTRAINT user_movie_fk2 FOREIGN KEY (movieId) REFERENCES movie (id) ON DELETE CASCADE ON UPDATE CASCADE;
