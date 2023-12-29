@@ -1,6 +1,4 @@
 #Here I would add the classes that access the database
-import sqlite3
-from Domain import Movie
 
 class UserDAO:
     def get_user(self, username, password):
