@@ -17,6 +17,7 @@ class UserDAO:
         #watched to True and add rating
         pass
 
+
 class MovieDAO:
     def get_movies(self):
         conn = sqlite3.connect("db/movies.db")
