@@ -16,6 +16,8 @@ class UserDAO:
     def watched_movie(self, user_id, movie_id, rating):
         #watched to True and add rating
         pass
+
+
 class MovieDAO:
     def get_movies(self):
         #return all movies
