@@ -27,8 +27,9 @@ class UserManager:
 class MovieManager:
     def __init__(self):
         self.dao = MovieDAO()
+
     def get_movies(self):
-        pass
+        return self.dao.get_movies()
 
     def get_movie_by_id(self, id):
-        pass
+        return self.dao.get_movie_by_id(id)

@@ -4,7 +4,16 @@ from dataclasses import dataclass
 
 @dataclass
 class Movie:
-    pass
+    def __init__(self, id, title, overview, release_date, imgPath):
+        self.id = id
+        self.title = title
+        self.overview = overview
+        self.release_date = release_date
+        self.imgPath = imgPath
+
+    def __repr__(self):
+        return f"Movie({self.id}, '{self.title}', '{self.overview}', '{self.release_date}', '{self.imgPath}')"
+
 
 @dataclass
 class User:
