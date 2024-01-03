@@ -126,3 +126,6 @@ INSERT INTO video (movieId, name, path, type) VALUES (85271, 'WandaVision | Stor
 INSERT INTO video (movieId, name, path, type) VALUES (85271, 'WandaVision | Reality | Disney+', 'https://www.youtube.com/embed/1GQ9mH5Zzr0', 'Teaser');
 INSERT INTO video (movieId, name, path, type) VALUES (85271, 'WandaVision | Sneak Peek | Disney+', 'https://www.youtube.com/embed/Ywz0neBdJzI', 'Teaser');
 INSERT INTO video (movieId, name, path, type) VALUES (85271, 'WandaVision | Mid-Season Trailer | Disney+', 'https://www.youtube.com/embed/Ch0wMWnXjeA', 'Trailer');
+INSERT INTO user (id, username, password) VALUES (1, 'user1', 'test123');
+INSERT INTO user (id, username, password) VALUES (2, 'user2', 'test123');
+INSERT INTO user (id, username, password) VALUES (3, 'user3', 'test123');
