@@ -2,3 +2,5 @@ streamlit
 st_pages
 streamlit-modal
 pandas
+requests
+Flask
