@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_modal import Modal
 import pandas as pd
 
+
 def handle_login_button(user_manager):
     modal = Modal("Login", key="login-modal", padding=20, max_width=744)
     sidebar = st.sidebar
@@ -26,7 +27,6 @@ def show_login_modal(user_manager):
         password = st.text_input("Password", type="password")
         submit = st.form_submit_button("Login")
 
-    #TODO check login
     if submit:
         user = user_manager.login(username, password)
         if user is not None:
@@ -37,6 +37,16 @@ def show_login_modal(user_manager):
             st.success("Login successful")
         else:
             st.error("Login failed")
+
+
+def handle_logout_button():
+    sidebar = st.sidebar
+    logout = sidebar.button("Logout")
+
+    if logout:
+        del st.session_state["user"]
+        st.rerun()
+
 
 def create_movie_df(movies):
     ids = []
