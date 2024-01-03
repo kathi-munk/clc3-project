@@ -19,8 +19,14 @@ class Movie:
 class User:
     id: int
     username: str
-    passwordhash: str
+    password: str
     movies: dict
+
+    def __init__(self, id, username, password):
+        self.id = id
+        self.username = username
+        self.password = password
+        self.movies = {}
     
     def __repr__(self): # printing 
         return f"User({self.id}, '{self.username}', '{self.movies}')"
