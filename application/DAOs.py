@@ -1,11 +1,12 @@
 #Here I would add the classes that access the database
+import os
 import sqlite3
 from Domain import Movie, User
 
 class UserDAO:
     def get_user(self, username, password):
         #check in db and return dataclass User
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?", (username, password))
@@ -26,7 +27,7 @@ class UserDAO:
 
     def get_movies(self, user:User):
         #get movies in user_movie table
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
             cursor.execute("SELECT movieId, watched FROM user_movie WHERE id = ?", (user.id,))
@@ -44,7 +45,7 @@ class UserDAO:
 
     def add_movie(self, user_id, movie_id):
         #watched = False
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO user_movie (user_id, movie_id, watched) VALUES (?, ?, ?)", (user_id, movie_id, False))
@@ -62,7 +63,7 @@ class UserDAO:
 
     def watched_movie(self, user_id, movie_id, rating):
         #watched to True and add rating
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
             cursor.execute("Update user_movie SET watched = ?, rating = ? WHERE user_id = ? AND movie_id = ?", (True, rating, user_id, movie_id))
