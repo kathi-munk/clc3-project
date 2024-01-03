@@ -29,10 +29,10 @@ class UserDAO:
         conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT movieId, watched FROM user_movie WHERE userId = ?", (user.id,))
+            cursor.execute("SELECT movieId, watched, rating FROM user_movie WHERE userId = ?", (user.id,))
             user_movies = cursor.fetchall()
             for user_movie in user_movies:
-                user.movies[user_movie[0]] = user_movie[1]
+                user.movies[user_movie[0]] = (user_movie[1], user_movie[2])
             return user.movies
 
         except sqlite3.Error as error:

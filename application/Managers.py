@@ -14,13 +14,13 @@ class UserManager:
     def get_watchlist(self, user):
         #get movies and filter
         allMovies = self.dao.get_movies(user)
-        watchlist = [k for k, v in allMovies.items() if not v]
+        watchlist = [k for k, v in allMovies.items() if not v[0]]
         return watchlist
 
     def get_watched_movies(self, user_id):
         #get movies and filter
         allMovies = self.dao.get_movies(user_id)
-        watched = [k for k, v in allMovies.items() if v]
+        watched = [(k, v[1]) for k, v in allMovies.items() if v[0]]
         return watched
 
     def add_movie(self, user_id, movie_id):
