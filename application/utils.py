@@ -28,21 +28,24 @@ def show_login_modal(user_manager):
 
     #TODO check login
     if submit:
-        user = user_manager.login()
+        user = user_manager.login(username, password)
         if user is not None:
             # If the form is submitted and the email and password are correct,
             # clear the form/container and display a success message
             placeholder.empty()
+            st.session_state["user"] = user
             st.success("Login successful")
         else:
             st.error("Login failed")
 
 def create_movie_df(movies):
+    ids = []
     titles = []
     overviews = []
     dates = []
     paths = []
     for movie in movies:
+        ids.append(movie.id)
         titles.append(movie.title)
         overviews.append(movie.overview)
         dates.append(movie.release_date)
@@ -50,6 +53,7 @@ def create_movie_df(movies):
 
     return pd.DataFrame(
         {
+            "id": ids,
             "imgPath": paths,
             "title": titles,
             "overview": overviews,

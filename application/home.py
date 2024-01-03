@@ -17,19 +17,48 @@ show_pages(
 movie_manager = MovieManager()
 user_manager = UserManager()
 
-if 'username' not in st.session_state:
+movie_df = create_movie_df(movie_manager.get_movies())
+
+if 'user' not in st.session_state:
     handle_login_button(user_manager)
 
-movies = movie_manager.get_movies()
+    st.dataframe(
+        movie_df,
+        column_config={
+            "imgPath": st.column_config.ImageColumn("Poster image"),
+            "title": "Title",
+            "overview":  "Overview",
+            "release_date":  "Release date"
+        },
+        use_container_width=True,
+        hide_index=True,
+        column_order=("add", "imgPath", "title", "overview", "release_date")
+    )
 
-st.dataframe(
-    create_movie_df(movies),
-    column_config={
-        "imgPath": st.column_config.ImageColumn("Poster image"),
-        "title": "Title",
-        "overview":  "Overview",
-        "release_date":  "Release date"
-    },
-    use_container_width = True,
-    hide_index=True,
-)
+else:
+    movie_df['add'] = False
+    movie_df = st.data_editor(
+        movie_df,
+        column_config={
+            "add": st.column_config.CheckboxColumn(
+                "Select for watchlist",
+                default=False,
+            ),
+            "imgPath": st.column_config.ImageColumn("Poster image"),
+            "title": "Title",
+            "overview": "Overview",
+            "release_date": "Release date"
+        },
+        use_container_width=True,
+        hide_index=True,
+        column_order=("add", "imgPath", "title", "overview", "release_date")
+    )
+
+    add_watchlist = st.button("Add to watchlist")
+
+    if add_watchlist:
+        ids = movie_df[movie_df["add"]]["id"]
+        for id in ids:
+            user_manager.add_movie(st.session_state["user"].id, id)
+
+        movie_df['add'] = False
