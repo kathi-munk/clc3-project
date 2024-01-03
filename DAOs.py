@@ -33,6 +33,8 @@ class UserDAO:
             user_movies = cursor.fetchall()
             for user_movie in user_movies:
                 user.movies.append(user_movie)
+            return user_movies
+        
         except sqlite3.Error as error:
             print("Failed to read data from sqlite table", error)
         finally:
@@ -40,15 +42,45 @@ class UserDAO:
             if conn:
                 conn.close()
 
-        pass
-
     def add_movie(self, user_id, movie_id):
         #watched = False
-        pass
+        conn = sqlite3.connect("db/movies.db")
+        try:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO user_movie (user_id, movie_id, watched) VALUES (?, ?, ?)", (user_id, movie_id, False))
+            conn.commit()
+
+        except sqlite3.IntegrityError as e:
+            print("Movie already exists for this user or user/movie not found.", e)
+        except sqlite3.Error as error:
+            print("Failed to insert data into sqlite table", error)
+        finally:
+            # Closing the connection
+            if conn:
+                conn.close()
+            
 
     def watched_movie(self, user_id, movie_id, rating):
         #watched to True and add rating
-        pass
+        conn = sqlite3.connect("db/movies.db")
+        try:
+            cursor = conn.cursor()
+            cursor.execute("Update user_movie SET watched = ?, rating = ? WHERE user_id = ? AND movie_id = ?", (True, rating, user_id, movie_id))
+            conn.commit()
+
+            # Check if the update was successful
+            if cursor.rowcount == 0:
+                print("No such movie found for the user or already watched.")
+            else:
+                print(f"Movie {movie_id} watched by user {user_id} with rating {rating}")
+                conn.commit()  # Commit changes to the database
+
+        except sqlite3.Error as error:
+            print("Failed to update data in sqlite table", error)
+        finally:
+            # Closing the connection
+            if conn:
+                conn.close()
     
 class MovieDAO:
     def get_movies(self):
