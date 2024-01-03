@@ -101,5 +101,5 @@ def get_movie(movie_id):
         return jsonify({"error": "Movie not found"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)  # Start the Flask application
+    app.run(debug=True, port=5001)  # Start the Flask application
 

@@ -159,7 +159,7 @@ def login():
     data = request.json
     user = user_manager.login(data['username'], data['password'])
     if user:
-        return jsonify(user.__repr__())  # Convert the user object to a string for JSON response
+        return jsonify(user)  # Convert the user object to a string for JSON response
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 
@@ -195,4 +195,4 @@ def watched_movie(user_id):
     return jsonify({"success": "Movie marked as watched"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)
