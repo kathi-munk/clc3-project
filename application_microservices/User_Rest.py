@@ -27,7 +27,7 @@ class UserDAO:
         conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?", (username, password))
+            cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
             user_data = cursor.fetchone()
             if user_data:
                 # Convert the movie data into a Movie object
