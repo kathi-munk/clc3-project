@@ -16,15 +16,15 @@ CREATE TABLE user_movie(
     watched     BOOLEAN NOT NULL,
     rating      INTEGER,
     PRIMARY KEY (userId, movieId),
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (userId) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (movieId) REFERENCES movie(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- users table
-CREATE TABLE users(
+CREATE TABLE user(
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     username     TEXT NOT NULL,
-    passwordhash TEXT NOT NULL,
+    password TEXT NOT NULL,
     UNIQUE(username)
 );
 

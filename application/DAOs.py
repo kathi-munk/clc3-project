@@ -5,7 +5,7 @@ from Domain import Movie, User
 class UserDAO:
     def get_user(self, username, password):
         #check in db and return dataclass User
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM user WHERE username = ? AND password = ?", (username, password))
@@ -26,15 +26,15 @@ class UserDAO:
 
     def get_movies(self, user:User):
         #get movies in user_movie table
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT movieId, watched FROM user_movie WHERE id = ?", (user.id,))
+            cursor.execute("SELECT movieId, watched FROM user_movie WHERE userId = ?", (user.id,))
             user_movies = cursor.fetchall()
             for user_movie in user_movies:
-                user.movies[user_movie.id] = user_movie.watched
-            return user_movies
-        
+                user.movies[user_movie[0]] = user_movie[1]
+            return user.movies
+
         except sqlite3.Error as error:
             print("Failed to read data from sqlite table", error)
         finally:
@@ -44,10 +44,10 @@ class UserDAO:
 
     def add_movie(self, user_id, movie_id):
         #watched = False
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO user_movie (user_id, movie_id, watched) VALUES (?, ?, ?)", (user_id, movie_id, False))
+            cursor.execute("INSERT INTO user_movie (userId, movieId, watched) VALUES (?, ?, ?)", (user_id, movie_id, False))
             conn.commit()
 
         except sqlite3.IntegrityError as e:
@@ -58,14 +58,14 @@ class UserDAO:
             # Closing the connection
             if conn:
                 conn.close()
-            
+
 
     def watched_movie(self, user_id, movie_id, rating):
         #watched to True and add rating
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             cursor = conn.cursor()
-            cursor.execute("Update user_movie SET watched = ?, rating = ? WHERE user_id = ? AND movie_id = ?", (True, rating, user_id, movie_id))
+            cursor.execute("Update user_movie SET watched = ?, rating = ? WHERE userId = ? AND movieId = ?", (True, rating, user_id, movie_id))
             conn.commit()
 
             # Check if the update was successful
@@ -81,10 +81,10 @@ class UserDAO:
             # Closing the connection
             if conn:
                 conn.close()
-    
+
 class MovieDAO:
     def get_movies(self):
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         movie_list = []
         try:
             cursor = conn.cursor()
@@ -108,7 +108,7 @@ class MovieDAO:
 
     def get_movie_by_id(self, id):
         # Connect to the SQLite database
-        conn = sqlite3.connect("db/movies.db")
+        conn = sqlite3.connect("../db/movies.db")
         try:
             # Create a cursor object using the cursor() method
             cursor = conn.cursor()
