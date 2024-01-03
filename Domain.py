@@ -17,5 +17,10 @@ class Movie:
 
 @dataclass
 class User:
-    #list with movies
-    pass
+    id: int
+    username: str
+    passwordhash: str
+    movies: dict
+    
+    def __repr__(self): # printing 
+        return f"User({self.id}, '{self.username}', '{self.movies}')"
