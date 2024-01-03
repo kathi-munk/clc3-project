@@ -11,9 +11,9 @@ class UserManager:
         user = self.dao.get_user(username, password)
         return user
 
-    def get_watchlist(self, user_id):
+    def get_watchlist(self, user):
         #get movies and filter
-        allMovies = self.dao.get_movies(user_id)
+        allMovies = self.dao.get_movies(user)
         watchlist = [k for k, v in allMovies.items() if not v]
         return watchlist
 
