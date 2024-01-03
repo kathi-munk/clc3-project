@@ -1,5 +1,4 @@
 #Here I would add the classes that access the database
-import os
 import sqlite3
 from Domain import Movie, User
 
@@ -35,7 +34,7 @@ class UserDAO:
             for user_movie in user_movies:
                 user.movies[user_movie[0]] = user_movie[1]
             return user.movies
-        
+
         except sqlite3.Error as error:
             print("Failed to read data from sqlite table", error)
         finally:
@@ -59,7 +58,7 @@ class UserDAO:
             # Closing the connection
             if conn:
                 conn.close()
-            
+
 
     def watched_movie(self, user_id, movie_id, rating):
         #watched to True and add rating
@@ -82,7 +81,7 @@ class UserDAO:
             # Closing the connection
             if conn:
                 conn.close()
-    
+
 class MovieDAO:
     def get_movies(self):
         conn = sqlite3.connect("../db/movies.db")
