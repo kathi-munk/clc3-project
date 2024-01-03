@@ -20,7 +20,7 @@ class User:
     id: int
     username: str
     passwordhash: str
-    movies: list
+    movies: dict
     
     def __repr__(self): # printing 
         return f"User({self.id}, '{self.username}', '{self.movies}')"
