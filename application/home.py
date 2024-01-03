@@ -2,17 +2,19 @@ import streamlit as st
 from st_pages import Page, show_pages
 
 from Managers import MovieManager, UserManager
-from utils import handle_login_button, create_movie_df
+from utils import handle_login_button, handle_logout_button, create_movie_df
 
 st.set_page_config(layout="wide")
 
 show_pages(
     [
-        Page("home.py", "Home"),
+        Page("home.py", "Home", ":house:"),
         Page("pages/watchlist.py", "Watchlist"),
         Page("pages/history.py", "History"),
     ]
 )
+
+st.title('Movie list')
 
 movie_manager = MovieManager()
 user_manager = UserManager()
@@ -36,6 +38,8 @@ if 'user' not in st.session_state:
     )
 
 else:
+    handle_logout_button()
+
     movie_df['add'] = False
     movie_df = st.data_editor(
         movie_df,
@@ -51,7 +55,8 @@ else:
         },
         use_container_width=True,
         hide_index=True,
-        column_order=("add", "imgPath", "title", "overview", "release_date")
+        column_order=("add", "imgPath", "title", "overview", "release_date"),
+        disabled=("imgPath", "title", "overview", "release_date")
     )
 
     add_watchlist = st.button("Add to watchlist")
@@ -61,4 +66,4 @@ else:
         for id in ids:
             user_manager.add_movie(st.session_state["user"].id, id)
 
-        movie_df['add'] = False
+        st.rerun()
