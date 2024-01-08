@@ -1,0 +1,24 @@
+services:
+  web-application:
+    image: km2/web:latest
+    build:
+      dockerfile: ./DockerfileWeb
+    ports:
+      - "8501:8501"
+  movie:
+    image: km2/movie:latest
+    build:
+      dockerfile: ./DockerfileMovie
+    ports:
+      - "5001:5001"
+  user:
+    image: km2/user:latest
+    build:
+      dockerfile: ./DockerfileUser
+    ports:
+      - "5002:5002"
+
+# database:
+#   image: km2/db:latest # oder postgres ?
+#   ports:
+#     - "5000:500"
