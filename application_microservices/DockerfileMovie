@@ -9,7 +9,7 @@ WORKDIR /app
 COPY Movie_Rest.py /app
 
 # Install the required packages specified in requirements.txt
-RUN pip install Flask
+RUN pip install Flask, psycopg2-binary
 
 # Make port 5001 available to the world outside this container
 EXPOSE 5001

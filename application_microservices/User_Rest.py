@@ -1,4 +1,4 @@
-import sqlite3
+import psycopg2
 from flask import Flask, jsonify, request
 from dataclasses import dataclass
 
@@ -17,106 +17,97 @@ class User:
         self.password = password
         self.movies = {}
 
-    def __repr__(self): # printing
+    def __repr__(self):
         return f"User({self.id}, '{self.username}', '{self.movies}')"
 
-
 class UserDAO:
+    def __init__(self):
+        self.conn_params = {
+            "dbname": "your_dbname",
+            "user": "your_username",
+            "password": "your_password",
+            "host": "your_host"
+        }
+
+    def get_connection(self):
+        return psycopg2.connect(**self.conn_params)
+
     def get_user(self, username, password):
-        #check in db and return dataclass User
-        conn = sqlite3.connect("../db/movies.db")
+        conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
+            cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s", (username, password))
             user_data = cursor.fetchone()
             if user_data:
-                # Convert the movie data into a Movie object
                 user = User(*user_data)
                 return user
             else:
-                # Return None or raise an error if no movie was found
                 return None
-        except sqlite3.Error as error:
-            print("Failed to read data from sqlite table", error)
+        except psycopg2.Error as error:
+            print("Failed to read data from table", error)
         finally:
-            # Closing the connection
             if conn:
                 conn.close()
 
-    def get_movies(self, user:User):
-        #get movies in user_movie table
-        conn = sqlite3.connect("../db/movies.db")
+    def get_movies(self, user: User):
+        conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT movieId, watched, rating FROM user_movie WHERE userId = ?", (user.id,))
+            cursor.execute("SELECT movieId, watched, rating FROM user_movie WHERE userId = %s", (user.id,))
             user_movies = cursor.fetchall()
             for user_movie in user_movies:
                 user.movies[user_movie[0]] = (user_movie[1], user_movie[2])
             return user.movies
-
-        except sqlite3.Error as error:
-            print("Failed to read data from sqlite table", error)
+        except psycopg2.Error as error:
+            print("Failed to read data from table", error)
         finally:
-            # Closing the connection
             if conn:
                 conn.close()
 
     def add_movie(self, user_id, movie_id):
-        #watched = False
-        conn = sqlite3.connect("../db/movies.db")
+        conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO user_movie (userId, movieId, watched) VALUES (?, ?, ?)", (user_id, movie_id, False))
+            cursor.execute("INSERT INTO user_movie (userId, movieId, watched) VALUES (%s, %s, %s)", (user_id, movie_id, False))
             conn.commit()
-
-        except sqlite3.IntegrityError as e:
+        except psycopg2.IntegrityError as e:
             print("Movie already exists for this user or user/movie not found.", e)
-        except sqlite3.Error as error:
-            print("Failed to insert data into sqlite table", error)
+        except psycopg2.Error as error:
+            print("Failed to insert data into table", error)
         finally:
-            # Closing the connection
             if conn:
                 conn.close()
 
-
     def watched_movie(self, user_id, movie_id, rating):
-        #watched to True and add rating
-        conn = sqlite3.connect("../db/movies.db")
+        conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("Update user_movie SET watched = ?, rating = ? WHERE userId = ? AND movieId = ?", (True, rating, user_id, movie_id))
-            conn.commit()
-
-            # Check if the update was successful
+            cursor.execute("Update user_movie SET watched = %s, rating = %s WHERE userId = %s AND movieId = %s", (True, rating, user_id, movie_id))
             if cursor.rowcount == 0:
                 print("No such movie found for the user or already watched.")
             else:
                 print(f"Movie {movie_id} watched by user {user_id} with rating {rating}")
-                conn.commit()  # Commit changes to the database
-
-        except sqlite3.Error as error:
-            print("Failed to update data in sqlite table", error)
+                conn.commit()
+        except psycopg2.Error as error:
+            print("Failed to update data in table", error)
         finally:
-            # Closing the connection
             if conn:
                 conn.close()
 
     def get_user_by_id(self, user_id):
-        conn = sqlite3.connect("../db/movies.db")
+        conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM user WHERE id = ?", (user_id,))
+            cursor.execute("SELECT * FROM user WHERE id = %s", (user_id,))
             user_data = cursor.fetchone()
             if user_data:
-                # Convert the user data into a User object
                 user = User(*user_data)
-                user.movies = self.get_movies(user)  # Assume get_movies() populates user movies
+                user.movies = self.get_movies(user)
                 return user
             else:
-                # Return None if no user was found
                 return None
-        except sqlite3.Error as error:
-            print("Failed to read data from sqlite table", error)
+        except psycopg2.Error as error:
+            print("Failed to read data from table", error)
         finally:
             if conn:
                 conn.close()
@@ -126,19 +117,15 @@ class UserManager:
         self.dao = UserDAO()
 
     def login(self, username, password):
-        #call get_user
-        user = self.dao.get_user(username, password)
-        return user
+        return self.dao.get_user(username, password)
 
     def get_watchlist(self, user):
-        #get movies and filter
         allMovies = self.dao.get_movies(user)
         watchlist = [k for k, v in allMovies.items() if not v[0]]
         return watchlist
 
-    def get_watched_movies(self, user_id):
-        #get movies and filter
-        allMovies = self.dao.get_movies(user_id)
+    def get_watched_movies(self, user):
+        allMovies = self.dao.get_movies(user)
         watched = [(k, v[1]) for k, v in allMovies.items() if v[0]]
         return watched
 
@@ -151,7 +138,6 @@ class UserManager:
     def get_user_by_id(self,user_id):
         return self.dao.get_user_by_id(user_id)
 
-
 user_manager = UserManager()
 
 @app.route('/login', methods=['POST'])
@@ -159,13 +145,13 @@ def login():
     data = request.json
     user = user_manager.login(data['username'], data['password'])
     if user:
-        return jsonify(user)  # Convert the user object to a string for JSON response
+        return jsonify(user.__dict__)
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 
 @app.route('/user/<int:user_id>/watchlist', methods=['GET'])
 def get_watchlist(user_id):
-    user = user_manager.get_user_by_id(user_id)  # Assume a method to get user by ID
+    user = user_manager.get_user_by_id(user_id)
     if user:
         watchlist = user_manager.get_watchlist(user)
         return jsonify(watchlist)
@@ -174,7 +160,7 @@ def get_watchlist(user_id):
 
 @app.route('/user/<int:user_id>/watched', methods=['GET'])
 def get_watched_movies(user_id):
-    user = user_manager.get_user_by_id(user_id)  # Assume a method to get user by ID
+    user = user_manager.get_user_by_id(user_id)
     if user:
         watched = user_manager.get_watched_movies(user)
         return jsonify(watched)
