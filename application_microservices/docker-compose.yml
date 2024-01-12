@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   web-application:
     image: km2/web:latest
@@ -5,12 +7,22 @@ services:
       dockerfile: ./DockerfileWeb
     ports:
       - "8501:8501"
+    networks:
+      - mynetwork
+    depends_on:
+      - movie
+      - user
+
   movie:
     image: km2/movie:latest
     build:
       dockerfile: ./DockerfileMovie
     ports:
       - "5001:5001"
+    networks:
+      - mynetwork
+    depends_on:
+      - database
 
   user:
     image: km2/user:latest
@@ -18,11 +30,22 @@ services:
       dockerfile: ./DockerfileUser
     ports:
       - "5002:5002"
+    networks:
+      - mynetwork
+    depends_on:
+      - database
 
   database:
-    image: km2/db:latest # oder postgres ?
+    image: km2/db:latest
     build:
       context: ../db
       dockerfile: ./DockerfileDB
     ports:
       - "5432:5432"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+

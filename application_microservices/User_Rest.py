@@ -26,8 +26,7 @@ class UserDAO:
             "dbname": "movies",
             "user": "myuser",
             "password": "mypassword",
-            "host":"database",
-            "port": "5432"
+            "host":"localhost"
         }
 
     def get_connection(self):

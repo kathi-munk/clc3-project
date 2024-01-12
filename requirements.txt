@@ -4,3 +4,4 @@ streamlit-modal
 pandas
 requests
 Flask
+psycopg2-binary

@@ -22,8 +22,7 @@ class MovieDAO:
             "dbname": "movies",
             "user": "myuser",
             "password": "mypassword",
-            "host":"database",
-            "port": "5432"
+            "host":"database"
         }
 
     def get_connection(self):
@@ -94,4 +93,6 @@ def get_movie(movie_id):
         return jsonify({"error": "Movie not found"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(host="0.0.0.0", debug=True, port=5001)
+
+
