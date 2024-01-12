@@ -16,7 +16,7 @@ show_pages(
 
 st.title('Movie list')
 
-movie_df = create_movie_df(requests.get("http://127.0.0.1:5001/movies").json())
+movie_df = create_movie_df(requests.get("http://movie-api:5001/movies").json())
 
 if 'user' not in st.session_state:
     handle_login_button()
@@ -60,7 +60,7 @@ else:
 
     if add_watchlist:
         ids = movie_df[movie_df["add"]]["id"]
-        url = f'http://127.0.0.1:5002/user/{st.session_state["user"]["id"]}/add_movie'
+        url = f'http://user-api:5002/user/{st.session_state["user"]["id"]}/add_movie'
         for id in ids:
             # Define your payload, the data you send to the API
             payload = {

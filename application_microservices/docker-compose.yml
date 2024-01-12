@@ -2,50 +2,41 @@ version: '3.9'
 
 services:
   web-application:
+    container_name: web-app
     image: km2/web:latest
     build:
       dockerfile: ./DockerfileWeb
     ports:
       - "8501:8501"
-    networks:
-      - mynetwork
     depends_on:
       - movie
       - user
 
   movie:
+    container_name: movie-api
     image: km2/movie:latest
     build:
       dockerfile: ./DockerfileMovie
     ports:
       - "5001:5001"
-    networks:
-      - mynetwork
     depends_on:
       - database
 
   user:
+    container_name: user-api
     image: km2/user:latest
     build:
       dockerfile: ./DockerfileUser
     ports:
       - "5002:5002"
-    networks:
-      - mynetwork
     depends_on:
       - database
 
   database:
+    container_name: database
     image: km2/db:latest
     build:
       context: ../db
       dockerfile: ./DockerfileDB
     ports:
       - "5432:5432"
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge
-

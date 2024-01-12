@@ -28,7 +28,7 @@ def show_login_modal():
         submit = st.form_submit_button("Login")
 
     if submit:
-        url = 'http://127.0.0.1:5002/login'
+        url = 'http://user-api:5002/login'
 
         # Define your payload, the data you send to the API
         payload = {
