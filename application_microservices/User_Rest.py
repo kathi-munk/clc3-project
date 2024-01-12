@@ -26,7 +26,7 @@ class UserDAO:
             "dbname": "movies",
             "user": "myuser",
             "password": "mypassword",
-            "host":"localhost"
+            "host":"database"
         }
 
     def get_connection(self):
@@ -36,7 +36,7 @@ class UserDAO:
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM user WHERE username = %s AND password = %s", (username, password))
+            cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
             user_data = cursor.fetchone()
             if user_data:
                 user = User(*user_data)
@@ -98,7 +98,7 @@ class UserDAO:
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM user WHERE id = %s", (user_id,))
+            cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
             user_data = cursor.fetchone()
             if user_data:
                 user = User(*user_data)
@@ -181,4 +181,4 @@ def watched_movie(user_id):
     return jsonify({"success": "Movie marked as watched"})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002)
+    app.run(host="0.0.0.0", debug=True, port=5002)
