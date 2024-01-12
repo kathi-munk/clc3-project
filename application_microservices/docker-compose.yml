@@ -18,7 +18,10 @@ services:
     ports:
       - "5002:5002"
 
-# database:
-#   image: km2/db:latest # oder postgres ?
-#   ports:
-#     - "5000:500"
+  database:
+    image: km2/db:latest # oder postgres ?
+    build:
+      context: ../db
+      dockerfile: ./DockerfileDB
+    ports:
+      - "5432:5432"
