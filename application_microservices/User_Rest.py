@@ -23,10 +23,11 @@ class User:
 class UserDAO:
     def __init__(self):
         self.conn_params = {
-            "dbname": "your_dbname",
-            "user": "your_username",
-            "password": "your_password",
-            "host": "your_host"
+            "dbname": "movies",
+            "user": "myuser",
+            "password": "mypassword",
+            "host":"database",
+            "port": "5432"
         }
 
     def get_connection(self):

@@ -11,6 +11,7 @@ services:
       dockerfile: ./DockerfileMovie
     ports:
       - "5001:5001"
+
   user:
     image: km2/user:latest
     build:
