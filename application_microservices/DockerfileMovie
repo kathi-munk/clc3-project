@@ -14,5 +14,8 @@ RUN pip install Flask psycopg2-binary psycopg2
 # Make port 5001 available to the world outside this container
 EXPOSE 5001
 
+ENV FLASK_APP=Movie_Rest.py
+ENV FLASK_DEBUG=1
+
 # Run app.py when the container launches
-ENTRYPOINT ["python", "./Movie_Rest.py"]
+CMD flask run --host 0.0.0.0 -p 5001
