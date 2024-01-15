@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: D:\Repos\clc3-project\application_microservices\kompose-windows-amd64.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: movie
+  name: movie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: movie
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: D:\Repos\clc3-project\application_microservices\kompose-windows-amd64.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/application-microservices-default: "true"
+        io.kompose.service: movie
+    spec:
+      containers:
+        - image: mathaler/movie:latest
+          name: movie-api
+          ports:
+            - containerPort: 5001
+              hostPort: 5001
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
