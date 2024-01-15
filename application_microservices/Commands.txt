@@ -32,6 +32,7 @@ You can now use your cluster with:
 
 
 #apply services
+# könnte a nur den ordner application_microservices angeben und er würde alle yml files verwenden
 kubectl apply -f database-service.yaml,movie-service.yaml,user-service.yaml,web-application-service.yaml,database-deployment.yaml,movie-deployment.yaml,user-deployment.yaml,web-application-deployment.yaml
 
 #service/database created
@@ -45,3 +46,21 @@ kubectl apply -f database-service.yaml,movie-service.yaml,user-service.yaml,web-
 
 #get deployments
 kubectl get deployments
+#NAME              READY   UP-TO-DATE   AVAILABLE   AGE
+#database          1/1     1            1           24m
+#movie             1/1     1            1           24m
+#user              1/1     1            1           24m
+#web-application   1/1     1            1           24m
+
+kubectl get pods
+#NAME                               READY   STATUS    RESTARTS   AGE
+#database-cbdb6d8fc-l9rdp           1/1     Running   0          15m
+#movie-7cf89c8d6d-w9995             1/1     Running   0          15m
+#user-759d7bf8f-xl9vs               1/1     Running   0          15m
+#web-application-55dd99cbc4-z8pgn   1/1     Running   0          15m
+
+kubectl describe deployments
+kubectl port-forward service/user 5002:5002
+kubectl port-forward service/movie 5001:5001
+kubectl port-forward service/database 5432:5432
+kubectl port-forward service/web-application 8501:8501
