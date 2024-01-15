@@ -1,0 +1,47 @@
+#convert docker-compose to kubernetes config files
+.\kompose-windows-amd64.exe convert
+
+#INFO Kubernetes file "database-service.yaml" created
+#INFO Kubernetes file "movie-service.yaml" created
+#INFO Kubernetes file "user-service.yaml" created
+#INFO Kubernetes file "web-application-service.yaml" created
+#INFO Kubernetes file "database-deployment.yaml" created
+#INFO Kubernetes file "movie-deployment.yaml" created
+#INFO Kubernetes file "user-deployment.yaml" created
+#INFO Kubernetes file "web-application-deployment.yaml" created
+
+
+#create cluster
+.\kind create cluster
+
+Creating cluster "kind" ...
+ • Ensuring node image (kindest/node:v1.27.3) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.27.3) 🖼
+ • Preparing nodes 📦   ...
+ ✓ Preparing nodes 📦
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+Set kubectl context to "kind-kind"
+You can now use your cluster with:
+
+
+#apply services
+kubectl apply -f database-service.yaml,movie-service.yaml,user-service.yaml,web-application-service.yaml,database-deployment.yaml,movie-deployment.yaml,user-deployment.yaml,web-application-deployment.yaml
+
+#service/database created
+#service/movie created
+#service/user created
+#service/web-application created
+#deployment.apps/database created
+#deployment.apps/movie created
+#deployment.apps/user created
+#deployment.apps/web-application created
+
+#get deployments
+kubectl get deployments
