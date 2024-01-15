@@ -13,7 +13,7 @@ services:
       - user
 
   movie:
-    container_name: movie-api
+    container_name: movie
     image: mathaler/movie:latest
     build:
       dockerfile: ./DockerfileMovie
@@ -23,7 +23,7 @@ services:
       - database
 
   user:
-    container_name: user-api
+    container_name: user
     image: mathaler/user:latest
     build:
       dockerfile: ./DockerfileUser

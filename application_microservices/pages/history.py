@@ -11,12 +11,12 @@ if 'user' not in st.session_state:
 else:
     handle_logout_button()
 
-    watched_tuples = requests.get(f'http://user-api:5002/user/{st.session_state["user"]["id"]}/watched').json()
+    watched_tuples = requests.get(f'http://user:5002/user/{st.session_state["user"]["id"]}/watched').json()
 
     movies = []
     ratings = []
     for watched_tuple in watched_tuples:
-        movies.append(requests.get(f"http://movie-api:5001/movie/{watched_tuple[0]}").json())
+        movies.append(requests.get(f"http://movie:5001/movie/{watched_tuple[0]}").json())
         ratings.append(watched_tuple[1])
     movie_df = create_movie_df(movies)
 

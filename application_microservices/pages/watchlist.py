@@ -10,11 +10,11 @@ if 'user' not in st.session_state:
 else:
     handle_logout_button()
 
-    watchlist_ids = requests.get(f'http://user-api:5002/user/{st.session_state["user"]["id"]}/watchlist').json()
+    watchlist_ids = requests.get(f'http://user:5002/user/{st.session_state["user"]["id"]}/watchlist').json()
 
     movies = []
     for id in watchlist_ids:
-        movies.append(requests.get(f"http://movie-api:5001/movie/{id}").json())
+        movies.append(requests.get(f"http://movie:5001/movie/{id}").json())
     movie_df = create_movie_df(movies)
 
     movie_df['add'] = False
@@ -50,7 +50,7 @@ else:
     if add_watched:
         ids = movie_df[movie_df["add"]]["id"].tolist()
         ratings = movie_df[movie_df["add"]]["rating"].tolist()
-        url = f'http://user-api:5002/user/{st.session_state["user"]["id"]}/watched_movie'
+        url = f'http://user:5002/user/{st.session_state["user"]["id"]}/watched_movie'
         for i in range(len(ids)):
             payload = {
                 'movie_id': ids[i],
