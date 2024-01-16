@@ -1,0 +1,21 @@
+# Use an official Python runtime as a parent image
+# docker build -f DockerfileUser -t ur . --progress=plain
+FROM python:3.9
+
+# Set the working directory in the container to /app
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY User_Rest.py /app
+
+# Install the required packages specified in requirements.txt
+RUN pip install Flask psycopg2-binary psycopg2
+
+# Make port 5002 available to the world outside this container
+EXPOSE 5002
+
+ENV FLASK_APP=User_Rest.py
+ENV FLASK_DEBUG=1
+
+# Run app.py when the container launches
+CMD flask run --host 0.0.0.0 -p 5002
