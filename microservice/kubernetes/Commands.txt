@@ -1,66 +1,24 @@
+#This command needs to be performed in the dockerization folder
 #convert docker-compose to kubernetes config files
 .\kompose-windows-amd64.exe convert
 
-#INFO Kubernetes file "database-service.yaml" created
-#INFO Kubernetes file "movie-service.yaml" created
-#INFO Kubernetes file "user-service.yaml" created
-#INFO Kubernetes file "web-application-service.yaml" created
-#INFO Kubernetes file "database-deployment.yaml" created
-#INFO Kubernetes file "movie-deployment.yaml" created
-#INFO Kubernetes file "user-deployment.yaml" created
-#INFO Kubernetes file "web-application-deployment.yaml" created
 
+#These commands need to be performed in the kubernetes folder
 
-#create cluster
-.\kind create cluster
-
-Creating cluster "kind" ...
- • Ensuring node image (kindest/node:v1.27.3) 🖼  ...
- ✓ Ensuring node image (kindest/node:v1.27.3) 🖼
- • Preparing nodes 📦   ...
- ✓ Preparing nodes 📦
- • Writing configuration 📜  ...
- ✓ Writing configuration 📜
- • Starting control-plane 🕹️  ...
- ✓ Starting control-plane 🕹️
- • Installing CNI 🔌  ...
- ✓ Installing CNI 🔌
- • Installing StorageClass 💾  ...
- ✓ Installing StorageClass 💾
-Set kubectl context to "kind-kind"
-You can now use your cluster with:
-
+#create cluster - kind need to be in PATH or in this folder
+kind create cluster
 
 #apply services
-# könnte a nur den ordner application_microservices angeben und er würde alle yml files verwenden
-kubectl apply -f database-service.yaml,movie-service.yaml,user-service.yaml,web-application-service.yaml,database-deployment.yaml,movie-deployment.yaml,user-deployment.yaml,web-application-deployment.yaml
-
-#service/database created
-#service/movie created
-#service/user created
-#service/web-application created
-#deployment.apps/database created
-#deployment.apps/movie created
-#deployment.apps/user created
-#deployment.apps/web-application created
+kubectl apply -f .
 
 #get deployments
 kubectl get deployments
-#NAME              READY   UP-TO-DATE   AVAILABLE   AGE
-#database          1/1     1            1           24m
-#movie             1/1     1            1           24m
-#user              1/1     1            1           24m
-#web-application   1/1     1            1           24m
 
+#get pods
 kubectl get pods
-#NAME                               READY   STATUS    RESTARTS   AGE
-#database-cbdb6d8fc-l9rdp           1/1     Running   0          15m
-#movie-7cf89c8d6d-w9995             1/1     Running   0          15m
-#user-759d7bf8f-xl9vs               1/1     Running   0          15m
-#web-application-55dd99cbc4-z8pgn   1/1     Running   0          15m
 
-kubectl describe deployments
-kubectl port-forward service/user 5002:5002
-kubectl port-forward service/movie 5001:5001
-kubectl port-forward service/database 5432:5432
+#get services
+kubectl get svc
+
+#forward web app port to access
 kubectl port-forward service/web-application 8501:8501

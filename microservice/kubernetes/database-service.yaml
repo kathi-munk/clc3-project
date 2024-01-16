@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kompose.cmd: D:\Repos\clc3-project\application_microservices\kompose-windows-amd64.exe convert
+    kompose.cmd: C:\Users\katha\FH_Hagenberg\DSE\3_Semester\CLC\Projekt\clc3-project\microservice\kompose-windows-amd64.exe convert
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
