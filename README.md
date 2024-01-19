@@ -11,10 +11,7 @@ Finally, to demonstrate that the microservices can be deployed on a cloud servic
 <a name="monoToMicro"></a>
 
 ## From monolith to microservice
-
-### Monolith architecture
-
-# Overview: Monolith Movie List Application
+## Overview: Monolith Movie List Application
 
 The **Monolith Movie List Application** is a web-based platform designed for managing movie and user data. It's built using Python and SQLite, and offers a user-friendly interface for users to interact with their movie collection. The application is comprised of several key Python modules, each dedicated to specific functions.
 
@@ -37,34 +34,34 @@ The **Monolith Movie List Application** is a web-based platform designed for man
   - `UserManager`: Deals with user login, watchlist, and watched movies functionalities.
   - `MovieManager`: Responsible for retrieving movie details.
 
-## Web Application with Streamlit
+### Web Application with Streamlit
 - Uses Streamlit for creating a user-friendly web interface.
 - Facilitates user interactions with the application, such as viewing movies, managing watchlists, and tracking watched movies.
 
-## Features
+### Features
 - **User Authentication**: Supports user login functionality.
 - **Movie Management**: Users can view movies, add them to their watchlist, and mark them as watched with ratings.
 - **Dynamic Data Handling**: Interacts dynamically with the SQLite database for real-time data updates.
 
-### Microservice architecture
-# Overview: Microservices Movie Listing Application
+### Monolith Architecture
+![Monolith Architecture](https://github.com/kathi-munk/clc3-project/blob/main/img/Monolith.png)
 
+
+## Overview: Microservices Movie Listing Application
 This application is a movie listing platform developed using Python and PostgreSQL. It provides features for users to view movies, manage watchlists, track watched movies and rate movies.
 
-## Features
+### Features
 - View a list of movies.
 - User authentication and management.
 - Add movies to a personal watchlist.
 - Mark movies as watched and rate them.
 
-## Requirements
+### Requirements
 - Python 3.x
 - Flask
 - psycopg2
 - Streamlit
 - Docker
-
-## Installation & Setup
 
 ### Database Setup
 - Ensure PostgreSQL is installed.
@@ -81,7 +78,7 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 ### Docker
 - The application is designed for containerization using Docker.
 
-## Running the Application
+### Running the Application
 1. Build the Docker images for the backend services and the frontend.
 2. Run the Docker containers.
 3. Access the Streamlit interface on the specified port.
@@ -100,7 +97,7 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 - `POST /user/<int:user_id>/watched_movie`: Mark a movie as watched.
 
 ## Architecture
-
+![Microservice Architecture](https://github.com/kathi-munk/clc3-project/blob/main/img/Microservices.png)
 
 
 Docker structure -> Magdalena
