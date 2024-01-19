@@ -19,6 +19,7 @@ Grafik die Aufbau zeigt und beschreiben -> Milan
 Grafik die Aufbau zeigt und Änderungen aufzählen -> Milan
 
 Docker structure -> Magdalena
+We created seperate Dockerfiles for Movie, User, Web and Database. In the docker-compose for each dockerfile a container is defined. The web container sends http-requests to the API containers. These are accessed via the hostname which is the same as the container name defined in the compose file. The dockerfiles are aufgebaut: using python base container, coppying needed files, install dependencies like Flask, set environment variables (which app flask should run). Start flask/streamlit on the defined port (5001, 5002). In the database docker the environments variables are the login data for the database. (evtl sollten wir die login daten von der db ins docker compose damits ned jedes mal die container neu gebaut werden müssen)
 
 <a name="setupMicro"></a>
 ## How to setup microservices on kubernetes

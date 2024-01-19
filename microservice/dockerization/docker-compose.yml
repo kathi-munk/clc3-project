@@ -36,7 +36,7 @@ services:
     container_name: database
     image: mathaler/db:latest
     build:
-      context: ../db
+      context: ../../db
       dockerfile: ./DockerfileDB
     ports:
       - "5432:5432"
