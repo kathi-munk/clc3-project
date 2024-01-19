@@ -41,6 +41,8 @@ The **Monolith Movie List Application** is a web-based platform designed for man
 ### Database
 ![Database](https://github.com/kathi-munk/clc3-project/blob/main/img/db_model.png)
 
+For the Monolith we opted for a sqlite database since it was easier to start with. However, for the microservices architecture we chose a PostgreSQL database to enable external access via a dedicated port.
+
 ### Features
 - **User Authentication**: Supports user login functionality.
 - **Movie Management**: Users can view movies, add them to their watchlist, and mark them as watched with ratings.
@@ -67,8 +69,7 @@ This application is a movie listing platform developed using Python and PostgreS
 - Docker
 
 ### Database Setup
-- Ensure PostgreSQL is installed.
-- Create a database named `movies`.
+- using an sqlitedatabase for simplicity
 
 ### Backend Services
 The application consists of two main Python scripts: `MovieRest.py` and `User_Rest.py`.
@@ -103,8 +104,19 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 ![Microservice Architecture](https://github.com/kathi-munk/clc3-project/blob/main/img/Microservices.png)
 
 
-Docker structure -> Magdalena
-We created seperate Dockerfiles for Movie, User, Web and Database. In the docker-compose for each dockerfile a container is defined. The web container sends http-requests to the API containers. These are accessed via the hostname which is the same as the container name defined in the compose file. The dockerfiles are aufgebaut: using python base container, coppying needed files, install dependencies like Flask, set environment variables (which app flask should run). Start flask/streamlit on the defined port (5001, 5002). In the database docker the environments variables are the login data for the database. (evtl sollten wir die login daten von der db ins docker compose damits ned jedes mal die container neu gebaut werden müssen)
+## Docker structure
+
+We created seperate Dockerfiles for Movie, User, Web and Database. In the docker-compose for each dockerfile a container is defined. The Web container establishes HTTP connections with the API containers, utilizing hostnames matching the container names defined in the compose file.
+The dockerfiles follow this structure: 
+- using python as base image
+- copying needed files
+- install dependencies e.g. Flask
+- set environment variables (e.g. which app flask should run)
+- starting flask/streamlit on the defined port (e.g. 5001 = movies-rest)
+In the database dockercontainer the environments variables are the login data for the database. <span style="color: red;">(? To avoid repeated container rebuilding, we might consider incorporating the database login information directly into the docker-compose file.?)</span>
+
+Here's the overview of the launched containers and their associated ports:
+![Docker Structure](https://github.com/kathi-munk/clc3-project/blob/main/img/dockercontainer_structure.png)
 
 <a name="setupMicro"></a>
 ## How to setup microservices on kubernetes
