@@ -38,6 +38,9 @@ The **Monolith Movie List Application** is a web-based platform designed for man
 - Uses Streamlit for creating a user-friendly web interface.
 - Facilitates user interactions with the application, such as viewing movies, managing watchlists, and tracking watched movies.
 
+### Database
+![Database](https://github.com/kathi-munk/clc3-project/blob/main/img/db_model.png)
+
 ### Features
 - **User Authentication**: Supports user login functionality.
 - **Movie Management**: Users can view movies, add them to their watchlist, and mark them as watched with ratings.
@@ -73,7 +76,7 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 - `User_Rest.py`: Manages user authentication and their watchlist.
 
 ### Frontend
-- The GUI is built with Streamlit, contained in a script named `Containerized the GUI`.
+- The GUI is built with Streamlit, contained in a script named `home.py` in combination with other Py-Files.
 
 ### Docker
 - The application is designed for containerization using Docker.
