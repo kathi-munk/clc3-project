@@ -1,21 +1,20 @@
-# Use an official Python runtime as a parent image
-# docker build -f DockerfileMovie -t mr . --progress=plain
+# Use an official Python runtime as a base image
 FROM python:3.9
 
-# Set the working directory in the container to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy the python-file into the container
 COPY Movie_Rest.py /app
 
-# Install the required packages specified in requirements.txt
+# Install the required packages
 RUN pip install Flask psycopg2-binary psycopg2
 
-# Make port 5001 available to the world outside this container
+# Make port 5001 available outside this container
 EXPOSE 5001
 
 ENV FLASK_APP=Movie_Rest.py
 ENV FLASK_DEBUG=1
 
-# Run app.py when the container launches
 CMD flask run --host 0.0.0.0 -p 5001
+
+

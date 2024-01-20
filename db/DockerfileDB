@@ -1,14 +1,14 @@
-# Basierend auf dem offiziellen Postgres-Image
+# Use an official postgres image as a base image
 FROM postgres:latest
 
-# Umgebungsvariablen für das automatische Ausführen der Skripte setzen
+# set environment variables for automatic script execution
 ENV POSTGRES_DB=movies
 ENV POSTGRES_USER=myuser
 ENV POSTGRES_PASSWORD=mypassword
 
-# Kopieren der SQL-Skripte in das Docker-Image
+# copy sql-scripts into the container
 COPY ./createDB.sql ./docker-entrypoint-initdb.d/10-createDB.sql
 COPY ./insertDB.sql ./docker-entrypoint-initdb.d/20-insertDB.sql
 
-# Der Standard-Port für PostgreSQL ist 5432
+# default-port for PostgreSQL is also 5432
 EXPOSE 5432

@@ -8,12 +8,12 @@ RUN pip install streamlit requests pandas streamlit-modal st-pages
 # Set the working directory in the container to /app
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy the needed files and directories into the container
 COPY pages pages/
 COPY home.py utils.py ./
 
 # Make port 8501 available to the world outside this container
 EXPOSE 8501
 
-# Run app.py when the container launches
+# Run streamlit when the container launches
 ENTRYPOINT ["streamlit", "run", "./home.py", "--server.port=8501", "--server.address=0.0.0.0"]
