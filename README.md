@@ -94,14 +94,14 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 
 
 ## Dockerizaton
-For  Movie, User, Web and Database seperate Dockerfiles were created. In the docker-compose for each dockerfile a container is defined. The Web container establishes HTTP connections with the API containers, utilizing hostnames matching the container names defined in the compose file.
+For  Movie, User, Web and Database seperate Dockerfiles were created. The docker-compose defines a container for each dockerfile. The Web container establishes HTTP connections with the API containers, utilizing hostnames matching the container names defined in the compose file.
 The dockerfiles follow this structure: 
 - using python as base image
 - copying needed files
 - install dependencies e.g. Flask
 - set environment variables (e.g. which app flask should run)
 - starting flask/streamlit on the defined port (e.g. 5001 = movies-rest)
-In the database dockercontainer the environments variables are the login data for the database. <span style="color: red;">(? To avoid repeated container rebuilding, we might consider incorporating the database login information directly into the docker-compose file.?)</span>
+In the database container the environments variables are the login data for the database. <span style="color: red;">(? To avoid repeated container rebuilding, we might consider incorporating the database login information directly into the docker-compose file.?)</span>
 
 Here's the overview of the launched containers and their associated ports:
 ![Docker Structure](https://github.com/kathi-munk/clc3-project/blob/main/img/dockercontainer_structure.png)
