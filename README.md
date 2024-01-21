@@ -44,7 +44,8 @@ The application was built with Python and SQLite, and offers a user-friendly int
 - Facilitates user interactions with the application, such as viewing movies, managing watchlists, and tracking watched movies.
 
 #### Database
-![Database](https://github.com/kathi-munk/clc3-project/blob/main/img/db_model.png)
+<img src="img/db_model.png" alt="Database" width="300" height="auto">
+
 
 For the Monolith we opted for a sqlite database since it was easier to start with. However, for the microservices architecture we chose a PostgreSQL database to enable external access via a dedicated port.
 
@@ -58,26 +59,14 @@ For the Monolith we opted for a sqlite database since it was easier to start wit
 ### Architecture
 ![Microservice Architecture](https://github.com/kathi-munk/clc3-project/blob/main/img/Microservices.png)
 
---Würd ich wieder entfernen
-### Features
-- View a list of movies.
-- User authentication and management.
-- Add movies to a personal watchlist.
-- Mark movies as watched and rate them.
-
-
---Text stimmt nicht
 ### Database change
-- using an sqlitedatabase for simplicity
+Instead of a SQLLite database a PostgreSQL database is now used, as these can be access via HTTP and the goal was to put the database into its own container and access it there.
 
 ### Backend Services
 The application consists of two main Python scripts: `MovieRest.py` and `User_Rest.py`.
 - `MovieRest.py`: Handles movie-related operations.
 - `User_Rest.py`: Manages user authentication and their watchlist.
 
---Würd ich wieder entfernen
-### Frontend
-- The GUI is built with Streamlit, contained in a script named `home.py` in combination with other Py-Files.
 
 ### API Endpoints
 
@@ -93,7 +82,7 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 - `POST /user/<int:user_id>/watched_movie`: Mark a movie as watched.
 
 
-## Dockerizaton
+## Dockerization
 For  Movie, User, Web and Database seperate Dockerfiles were created. The docker-compose defines a container for each dockerfile. The Web container establishes HTTP connections with the API containers, utilizing hostnames matching the container names defined in the compose file.
 The dockerfiles follow this structure: 
 - using python as base image
