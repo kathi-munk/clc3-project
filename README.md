@@ -17,7 +17,7 @@ Finally, to demonstrate that the microservices can be deployed on a cloud servic
 
 ## Monolith 
 ### Architecture
-![Monolith Architecture](https://github.com/kathi-munk/clc3-project/blob/main/img/Monolith.png)
+![Monolith Architecture](img/Monolith.png)
 
 The application was built with Python and SQLite, and offers a user-friendly interface for users to interact with their movie collection. The application is built of multiple python "modules", each dedicated to specific functions.
 
@@ -46,30 +46,24 @@ The application was built with Python and SQLite, and offers a user-friendly int
 #### Database
 <img src="img/db_model.png" alt="Database" width="300" height="auto">
 
-
 For the Monolith we opted for a sqlite database since it was easier to start with. However, for the microservices architecture we chose a PostgreSQL database to enable external access via a dedicated port.
-
-----Featuresteil würd ich entfernen
-#### Features
-- **User Authentication**: Supports user login functionality.
-- **Movie Management**: Users can view movies, add them to their watchlist, and mark them as watched with ratings.
-- **Dynamic Data Handling**: Interacts dynamically with the SQLite database for real-time data updates.
 
 ## Microservices 
 ### Architecture
-![Microservice Architecture](https://github.com/kathi-munk/clc3-project/blob/main/img/Microservices.png)
+![Microservice Architecture](img/Microservices.png)
+
+The biggest change from the monolithic to the microservice architecture is that now the functionality of the Users, Movies, the WebApp and the database were split up into seperate containers/python scripts. Meaning that in the Movie and User files the domain class, DAO and Manager of the respective functionality is encapsulated. To be able to communicate between the containers/scripts it was necessary to build REST API endpoints for the Movie and User containers, to use their functionality. Additionally, the communication between the DAOs and the database was adapted to use the HTTP protocol to access the data in the database.
 
 ### Database change
-Instead of a SQLLite database a PostgreSQL database is now used, as these can be access via HTTP and the goal was to put the database into its own container and access it there.
+Instead of a SQLite database a PostgreSQL database is now used, as these can be access via HTTP and the goal was to put the database into its own container and access it there.
 
 ### Backend Services
-The application consists of two main Python scripts: `MovieRest.py` and `User_Rest.py`.
-- `MovieRest.py`: Handles movie-related operations.
+The application consists of two main Python scripts: `Movie_Rest.py` and `User_Rest.py`.
+- `Movie_Rest.py`: Handles movie-related operations.
 - `User_Rest.py`: Manages user authentication and their watchlist.
 
 
 ### API Endpoints
-
 #### Movie Service
 - `GET /movies`: Fetch all movies.
 - `GET /movie/<int:movie_id>`: Fetch a single movie by its ID.
@@ -84,21 +78,26 @@ The application consists of two main Python scripts: `MovieRest.py` and `User_Re
 
 ## Dockerization
 For  Movie, User, Web and Database seperate Dockerfiles were created. The docker-compose defines a container for each dockerfile. The Web container establishes HTTP connections with the API containers, utilizing hostnames matching the container names defined in the compose file.
+
 The dockerfiles follow this structure: 
 - using python as base image
 - copying needed files
 - install dependencies e.g. Flask
 - set environment variables (e.g. which app flask should run)
 - starting flask/streamlit on the defined port (e.g. 5001 = movies-rest)
-In the database container the environments variables are the login data for the database. <span style="color: red;">(? To avoid repeated container rebuilding, we might consider incorporating the database login information directly into the docker-compose file.?)</span>
+
+In the database container the environments variables are the login data for the database.
 
 Here's the overview of the launched containers and their associated ports:
-![Docker Structure](https://github.com/kathi-munk/clc3-project/blob/main/img/dockercontainer_structure.png)
+![Docker Structure](img/dockercontainer_structure.png)
 
 ### Running the microservice in docker
-1. Build the Docker images for the backend services and the frontend.
-2. Run the Docker containers.
-3. Access the Streamlit interface on the specified port.
+1. open the repository in the CLI 
+2. change into the microservice/dockerization folder (`cd microservice\dockerization`)
+3. Build the docker-compose: `docker compose up`
+4. Open application in `localhost:8501`
+
+To be able to use the docker images for the Kubernetes setup, the images were published on DockerHub.
 
 ## Microservices on Kubernetes
 To run the microservices on Kubernetes we built on the before explained docker-compose.
@@ -106,16 +105,19 @@ To run the microservices on Kubernetes we built on the before explained docker-c
 To convert the docker-compose into the Kubernetes configuration files, `konvert compose` was used to built the deployment and service YAML files. These configuration files can be found in the kubernetes folder.
 
 To finally setup and start the application in Kubernetes the following steps need to be done:
-- open the repository in the CLI 
-- change into the microservice/kubernetes folder (`cd microservice\kubernetes`)
-- create a Kubernetes cluster: `kind create cluster`
-- apply the configuration files: `kubectl apply -f .`
-- check that deployments were created: `kubectl get deployments`
-- check that services were created: `kubectl get svc`
-- open port to web application: `kubectl port-forward service/web-application 8501:8501`
-- open application in `127.0.0.1:8501`
-
+1. Open the repository in the CLI 
+2. Change into the microservice/kubernetes folder (`cd microservice\kubernetes`)
+3. Create a Kubernetes cluster: `kind create cluster`
+4. Apply the configuration files: `kubectl apply -f .`
+5. Check that deployments were created: `kubectl get deployments`
+6. Check that services were created: `kubectl get svc`
+7. Open port to web application: `kubectl port-forward service/web-application 8501:8501`
+8. Open application in `127.0.0.1:8501`
 
 
 ## Summary of lessons-learned
-gemeinsam
+- Not every database is suitable for microservice use when it should run in its' own container(e.g. SQLite)
+- It's easier to write a docker-compose and convert it into the Kubernetes config files than to write the config files directly
+- Kind is a very good alternative to GCloud or Azure if you want to deploy only small applications (small use-case)
+- Setting up Kubernetes is very easy, when you have the config files
+- If you have a good monolithic structure and docker knowledge it can be relativly easy to convert the monolith into a microservice application.
